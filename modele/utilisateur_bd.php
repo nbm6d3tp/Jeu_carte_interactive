@@ -46,14 +46,14 @@ function verif_ident_e_bd($pseudo, $mdp,&$resultat) {
 	 
 }
 
-function existe($pseudo){ //verifier si le compte on veut creer (inscrire) est deja dans la bdd
+function existe($username){ //verifier si le compte on veut creer (inscrire) est deja dans la bdd
 
 	require ("./modele/connect.php");
-	$sql="SELECT pseudo FROM `client`  where pseudo=:pseudo";
+	$sql="SELECT username FROM `utilisateur`  where username=:username";
 	
 	try {
 		$commande = $pdo->prepare($sql);
-		$commande->bindParam(':pseudo', $pseudo);
+		$commande->bindParam(':username', $username);
 		$commande->execute();
 		$bool=$commande->fetch(PDO::FETCH_ASSOC);
 		if($bool!=null)return true;
@@ -67,24 +67,21 @@ function existe($pseudo){ //verifier si le compte on veut creer (inscrire) est d
 
 }
 
-function inscrire_bd($nom,$pseudo,$mdp,$email,$nomE,$adresseE,&$resultat=array()) {
+function inscrire_bd($name,$username,$password,&$resultat=array()) {
 	require ("./modele/connect.php"); 
-	$mdp_encode=sha1($mdp);
+	$mdp_encode=sha1($password);
 
-	$sql='INSERT INTO client(nom, pseudo, mdp, email,nomE,adresseE) values (:nom, :pseudo, :mdp, :email,:nomE,:adresseE)';
+	$sql='INSERT INTO utilisateur(name, username, password) values (:name, :username, :password)';
 	try {
 		$commande = $pdo->prepare($sql);
-		$commande->bindParam(':nom', $nom);
-		$commande->bindParam(':pseudo', $pseudo);
-		$commande->bindParam(':mdp', $mdp_encode);
-		$commande->bindParam(':email', $email);
-        $commande->bindParam(':nomE', $nomE);
-        $commande->bindParam(':adresseE', $adresseE);
+		$commande->bindParam(':name', $name);
+		$commande->bindParam(':username', $username);
+		$commande->bindParam(':password', $mdp_encode);
 		$commande->execute();
 		
-		$sql="SELECT * FROM `client`  where pseudo=:pseudo";
+		$sql="SELECT * FROM `utilisateur`  where username=:username";
 		$commande = $pdo->prepare($sql);
-		$commande->bindParam(':pseudo', $pseudo);
+		$commande->bindParam(':username', $username);
 		$bool=$commande->execute();
 
 		if($bool)$resultat = $commande->fetch(PDO::FETCH_ASSOC);

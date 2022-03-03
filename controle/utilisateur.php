@@ -39,47 +39,34 @@ function accueil() { //fonction affichier l'accueil pour le Loueur, à faire (Mi
 
 function inscrire(){ //fonction d'inscription
 
-	$nom=  isset($_POST['nom'])?($_POST['nom']):'';
-	$pseudo= isset($_POST['pseudo'])?($_POST['pseudo']):'';
-	$mdp=  isset($_POST['mdp'])?($_POST['mdp']):'';
-    $mdp_cf= isset($_POST['mdp_cf'])?($_POST['mdp_cf']):'';
-	$email= isset($_POST['email'])?($_POST['email']):'';
-    $nomE= isset($_POST['nomE'])?($_POST['nomE']):'';
-    $adresseE= isset($_POST['adresseE'])?($_POST['adresseE']):'';
-
-	$ins=false;
-	$msg='';
+	$name=  isset($_POST['name'])?($_POST['name']):'';
+	$username= isset($_POST['username'])?($_POST['username']):'';
+	$password=  isset($_POST['password'])?($_POST['password']):'';
 	$_SESSION['profil'] = array();
 
 
-    if  ($nom==''||$pseudo==''||$mdp==''||$email==''||$mdp_cf==''||$nomE==''||$adresseE==''){
-		require ("./vue/utilisateur/entreprise/inscrire.tpl") ;
+    if  ($name==''||$username==''||$password==''){
+		echo "Champ invalide" ;
 	}
-    else if($mdp!=$mdp_cf){
-        $msg= "Les mots de passe ne correspondent pas";
-        require ("./vue/utilisateur/entreprise/inscrire.tpl") ;
-    }       
+    // else if($mdp!=$mdp_cf){
+    //     echo "Les mots de passe ne correspondent pas";
+    // }       
     else{
         require_once ('./modele/utilisateur_bd.php');
-		if(existe($pseudo)){
-			$msg='Compte deja existe';
-			require ("./vue/utilisateur/entreprise/inscrire.tpl") ;
+		if(existe($name)){
+			echo 'Compte deja existe';
 		}
 		else{
-			if(inscrire_bd($nom,$pseudo,$mdp,$email,$nomE,$adresseE,$resultat)){
-				$msg="Succes d'inscription"; 
-				$ins=true;
+			if(inscrire_bd($name,$username,$password,$resultat)){
 				setcookie('id',$resultat['id'],time()+3000); //creation de cookies
 				unset($_SESSION['profil']);
-				unset($_SESSION['role']);
-				$_SESSION['profil']['nom'] = $resultat['nom'];
+				$_SESSION['profil']['name'] = $resultat['name'];
 				$_SESSION['profil']['id'] = $resultat['id'];
-				$_SESSION['role']="entreprise";	
-				require ("./vue/utilisateur/entreprise/inscrire.tpl") ;
+				echo "Succes d'inscription"; 
+				
 			}
 			else{
-				$msg="Echec d'inscription"; 
-				require ("./vue/utilisateur/entreprise/inscrire.tpl") ;
+				echo "Echec d'inscription"; 
 			}
 		}
     
