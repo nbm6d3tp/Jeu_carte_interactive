@@ -1,3 +1,7 @@
+var rightCountry = "";
+//var latiElement = '';
+//var longiElement = '';
+
 window.onload = function () {
 	
     //Initialisation temporaire du tableau
@@ -17,7 +21,6 @@ window.onload = function () {
 		 
 		//Evenement lors du drop
 		drop: function( event, ui ) {
-			console.log(ui.offset.left - $(this).offset().left, "  ", ui.offset.top - $(this).offset().top);
 			//Recupère l'id du block div "dropped" dans la map
 			var IdPays;
             tab.forEach(element => {
@@ -27,7 +30,7 @@ window.onload = function () {
 
 			var chaine="";
 			chaine+="Pays : "+IdPays+"</br>";
-			
+
 			//Requete AJAX pour récupérer les coordonnées du pays de l'objet
 			$.ajax({
 			    type: 'GET',
@@ -39,54 +42,66 @@ window.onload = function () {
 						alert("ERROR " + error);
 			    },
 			    success: function(data){
-				//Récupérer les coordonnées (lati, longi) du pays dans les données json provenant du serveur
-					var lati = '';
-					var longi = '';
+					//Récupérer les coordonnées (lati, longi) du pays dans les données json provenant du serveur et les stocker en attendant la proposition du joueur		
 					$.each(data, function() {
-						lati = this['lat'] ;
-						longi = this['lon'] ;
-				});
-				
-                // Comparaison
+							//if(this['country']!=undefined) {
+								//latiElement = this['lat'];
+								//longiElement = this['lon'];
+								rightCountry = this['country'];
+								alert(this['country']);
+							//}
+					});
+					alert(rightCountry);
+				}
 
-				//MAJ de la map à la position (lati, longi) du pays
-				//map.panTo(new L.LatLng(lati, longi));		
-				
-			    }
 			});
-			
 			
 		}
 	});
 	
 	//Sur le click de la map, ajout d'un marqueur sur la carte avec le nom du pays
-	map.on('click', onClick);
+	map.on('mouseup', onClick);
 	
 	function onClick(e) {
 		//Recherche le pays sur lequel on a cliqué
-		//Requete AJAX pour récupérer les infos du pays sur le point où on a cliqué (lati, longi) 
-		$.ajax({
-		    type: 'GET',
-		    url: "http://nominatim.openstreetmap.org/reverse",
-		    dataType: 'jsonp',
-		    jsonpCallback: 'data',
-		    data: { format: "json", limit: 1,lat: e.latlng.lat,lon: e.latlng.lng,json_callback: 'data' },
-		    error: function(xhr, status, error) {
-			alert("ERROR "+error);
-		    },
-		    success: function(data){
-			//Récupérer les coordonnées (lati, longi) du pays dans les données json provenant du serveur
-			var paysVisite="";
-			$.each(data, function() {
-                if(this['country']!=undefined)
-				    paysVisite = this['country'];
-			});
-			
-			//affichage des infos
-			L.marker(e.latlng).addTo(map).bindPopup("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng+" Pays : "+paysVisite).openPopup();
-			L.circle(e.latlng, 1).addTo(map);			
-		    }
-		});
+		//Requete AJAX pour récupérer les infos du pays sur le point où on a cliqué (lati, longi)
+		setTimeout(
+			function() {
+				$.ajax({
+					type: 'GET',
+					url: "http://nominatim.openstreetmap.org/reverse",
+					dataType: 'jsonp',
+					jsonpCallback: 'data',
+					data: { format: "json", limit: 1,lat: e.latlng.lat,lon: e.latlng.lng,json_callback: 'data' },
+					error: function(xhr, status, error) {
+					alert("ERROR "+error);
+					},
+					success: function(data){
+					//Récupérer les coordonnées (lati, longi) du pays dans les données json provenant du serveur
+					var paysPropose="";
+					$.each(data, function() {
+						if(this['country']!=undefined)
+							paysPropose = this['country'];
+					});
+					//MAJ de la map à la position (lati, longi) du pays
+					if((rightCountry!="") && (rightCountry!=undefined)) {
+						if((rightCountry == paysPropose)) {
+							alert("Bravo ! Le pays est bien " + paysPropose + " !");
+						} else {
+							alert("Perdu... Le pays n'est pas " + paysPropose + " mais " + rightCountry);
+						}
+		
+						//affichage des infos
+						//map.panTo(new L.LatLng(latiElement, longiElement));
+						//L.marker(e.latlng).addTo(map).bindPopup("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng+" Pays : "+rightCountry).openPopup();
+						//L.circle(e.latlng, 1).addTo(map);	
+					}
+							
+					}
+				});
+			  
+		}, 5000);
+
 	}
 	
 }
