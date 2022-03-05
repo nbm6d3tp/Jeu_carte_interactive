@@ -48,10 +48,9 @@
     <div id="map"></div>
 
     <div>
-        <p>Points : </p>
-        <p>Temps restant : </p>
+        <p>Points : <span id="pts"></span></p>
+        <p>Temps restant : <span id="tps"></span></p>
     </div>
-
 
 </body>
 </html>
