@@ -7,85 +7,17 @@
 
 
   <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css" />
+  <link rel="stylesheet" href="vue/index.css">
 
-<style>
-  label, input { display:block; }
-input.text { margin-bottom:12px; width:95%; padding: .4em; }
-fieldset { padding:0; border:0; margin-top:25px; }
-h1 { font-size: 1.2em; margin: .6em 0; }
-div#users-contain { width: 350px; margin: 20px 0; }
-div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
-div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
-.ui-dialog .ui-state-error { padding: .3em; }
-.validateTips { border: 1px solid transparent; padding: 0.3em; }
-</style>
+
   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
   <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
-  <script>
-  $( function() {
-    var dialog, form,
-      name = $( "#name" ),
-      username=$( "#username" ),
-      password = $( "#password" ),
-      allFields = $( [] ).add( name ).add( username ).add( password ),
-      tips = $( ".validateTips" );
- 
-    function updateTips( t ) {
-      tips
-        .html(t)
-        .addClass( "ui-state-highlight" );
-      setTimeout(function() {
-        tips.removeClass( "ui-state-highlight", 1500 );
-      }, 500 );
-    }
- 
-    function addUser() {
-      $.post( $("#form_inscrire").attr("action"), 
-         $("#form_inscrire :input").serializeArray(), 
-         function(info){ updateTips(info); 
-          tips.addClass( "ui-state-highlight" );
-      setTimeout(function() {
-        tips.removeClass( "ui-state-highlight", 1500 );
-      }, 500 );
-      }
-      );
-      clearInput();
-    }
- 
-    dialog = $( "#dialog-form-inscrire" ).dialog({
-      autoOpen: false,
-      height: 400,
-      width: 350,
-      modal: true,
-      buttons: {
-        "Create an account": addUser,
-        Cancel: function() {
-          tips.html("All form fields are required.");
-          dialog.dialog( "close" );
-        }
-      },
-      close: function() {
-        tips.html("All form fields are required.");
-        form[ 0 ].reset();
-        allFields.removeClass( "ui-state-error" );
-      }
-    });
-    $("#form_inscrire").submit( function() {
-    return false;
-    });
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
+       
+  <script src="js/index.js"></script>
 
-    form = dialog.find( "form" ).on( "submit", addUser);
-    $( "#create-user" ).button().on( "click", function() {
-      dialog.dialog( "open" );
-    });
-  } );
 
-  function clearInput() {
-    $("#form_inscrire :input").each( function() {
-      $(this).val('');
-    });
-  }
-  </script>
 </head>
 <body>
  
@@ -95,39 +27,85 @@ div#users-contain table td, div#users-contain table th { border: 1px solid #eee;
   <form id="form_inscrire" action="index.php?controle=utilisateur&action=inscrire" method="post">
     <fieldset>
       <label for="name">Name</label>
-      <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all">
+      <input type="text" name="name" class="text ui-widget-content ui-corner-all name">
       <label for="username">Username</label>
-      <input type="text" name="username" id="username"  class="text ui-widget-content ui-corner-all">
+      <input type="text" name="username"  class="text ui-widget-content ui-corner-all username">
       <label for="password">Password</label>
-      <input type="password" name="password" id="password" class="text ui-widget-content ui-corner-all">
-
+      <input type="password" name="password" class="text ui-widget-content ui-corner-all password">
+      <label for="con_password">Confirmation of password</label>
+      <input type="password" name="con_password"class="text ui-widget-content ui-corner-all con_password">
+     
+      <label for="latitude">Latitude</label>
+      <input type="text" name="latitude"class="text ui-widget-content ui-corner-all latitude">
+      <label for="longitude">Longitude</label>
+      <input type="text" name="longitude"class="text ui-widget-content ui-corner-all longitude">
       <!-- Allow form submission with keyboard without duplicating the dialog button -->
-      <input type="submit" id="sub" tabindex="-1" style="position:absolute; top:-1000px">
+      <input type="submit" class="sub" tabindex="-1" style="position:absolute; top:-1000px">
     </fieldset>
   </form>
+  <button id='getLoc'>Get current location</button>
 </div>
  
 
-<!-- 
 <div id="dialog-form-connecter" title="Connecter">
   <p class="validateTips">All form fields are required.</p>
  
-  <form id="form_inscrire" action="index.php?controle=utilisateur&action=inscrire" method="post">
+  <form id="form_connecter" action="index.php?controle=utilisateur&action=ident" method="post">
     <fieldset>
       <label for="username">Username</label>
-      <input type="text" name="username" id="username"  class="text ui-widget-content ui-corner-all">
+      <input type="text" name="username" class="text ui-widget-content ui-corner-all username">
       <label for="password">Password</label>
-      <input type="password" name="password" id="password" class="text ui-widget-content ui-corner-all">
+      <input type="password" name="password" class="text ui-widget-content ui-corner-all password">
 
-      <input type="submit" id="sub" tabindex="-1" style="position:absolute; top:-1000px">
+      <input type="submit" class="sub" tabindex="-1" style="position:absolute; top:-1000px">
     </fieldset>
   </form>
-</div> -->
+</div>
 
-<button id="create-user">Create new user</button>
-<!-- <button id="connecter">Connection</button> -->
+<?php
+if(isset($_SESSION['profil'])&&$_SESSION['profil']!=null){
+    echo '<h3> 	Bienvenue M.'.$_SESSION['profil']['name'].'</h3>';
+    echo "<button id='deconnecter'>Deconnection</button>";
+    echo "<div class='liste_amis'>";
 
- 
- 
+    foreach($_SESSION['profil']['amis'] as $cle => $ami){
+      echo "<div></div>"
+      } 
+
+    echo "</div>";
+
+
+
+    
+    
+   
+      
+}
+else{
+    echo "<button id='create-user'>Create new user</button>";
+    echo "<button id='connecter'>Connection</button>";
+}
+
+?>
+
+  <div class="ami">
+    <p>name</p>
+    
+  </div>
+
+
+<div class='espace'></div>
+  <div class="formBlock">
+    <form id="formmap">
+        <input type="text" name="start" class="input" id="start" placeholder="Choose starting point" />
+        <input type="text" name="end" class="input" id="destination" placeholder="Choose starting point" />
+        <button style="display: none;" type="submit">Get Directions</button>
+    </form>
+  </div>
+  <div id='map'></div>
+
+<script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-map.js?key=S8d7L47mdyAG5nHG09dUnSPJjreUVPeC"></script>
+<script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-routing.js?key=S8d7L47mdyAG5nHG09dUnSPJjreUVPeC"></script>
+<script src="js/map.js"></script>
 </body>
 </html>

@@ -1,33 +1,35 @@
 <?php 
 
 function ident() { 
-	$pseudo=  isset($_POST['pseudo'])?($_POST['pseudo']):'';
-	$mdp=  isset($_POST['mdp'])?($_POST['mdp']):'';
-	$msg='';
+	
 	$_SESSION['profil'] = array();
-
-	if  (count($_POST)==0)
-        require ("./vue/utilisateur/ident.tpl") ;
-    else {
+	$username= isset($_POST['username'])?($_POST['username']):'';
+	$password=  isset($_POST['password'])?($_POST['password']):'';
+	if  ($username==''||$password==''){
+		echo "Champ invalide" ;   
+	}
+	else {
 	    require_once ("./controle/utilisateur.php");
-		if  (! verif_ident($pseudo,$mdp,$resultat)) {
-			$msg ="erreur de saisie";
-	        require ("./vue/utilisateur/ident.tpl") ;
+		if  (! verif_ident($username,$password,$resultat)) {
+			echo "Echec d'authentification"; 
 		}
 	    else { 
-            unset($_SESSION['profil']);
-			$_SESSION['profil']['nom'] = $resultat['nom'];
+			unset($_SESSION['profil']);
+			$_SESSION['profil']['name'] = $resultat['name'];
+			$_SESSION['profil']['latitude'] = $resultat['latitude'];
+			$_SESSION['profil']['longitude'] = $resultat['longitude'];
 			$_SESSION['profil']['id'] = $resultat['id'];
-			$url = "index.php?controle=utilisateur&action=accueil";
-			header ("Location:" . $url) ;
+			$_SESSION['profil']['amis'] = getFriends($resultat['id']);
+			echo "Succes"; 
+
 		}
     }	
 }
 
-
-function verif_ident($pseudo,$mdp,&$resultat) { //fonction verifier l'identification pour le Loueur
+function verif_ident($username,$password,&$resultat) { //fonction verifier l'identification pour le Loueur
+	
 	require ('./modele/utilisateur_bd.php');
-	return verif_ident_l_BD($pseudo,$mdp,$resultat);
+	return verif_ident_bd($username,$password,$resultat);
 }
 
 
@@ -42,27 +44,34 @@ function inscrire(){ //fonction d'inscription
 	$name=  isset($_POST['name'])?($_POST['name']):'';
 	$username= isset($_POST['username'])?($_POST['username']):'';
 	$password=  isset($_POST['password'])?($_POST['password']):'';
+	$con_pass=  isset($_POST['con_password'])?($_POST['con_password']):'';
+	$latitude=  isset($_POST['latitude'])?($_POST['latitude']):'';
+	$longitude=  isset($_POST['longitude'])?($_POST['longitude']):'';
+
 	$_SESSION['profil'] = array();
 
 
-    if  ($name==''||$username==''||$password==''){
+    if  ($name==''||$username==''||$password==''||$latitude==''||$longitude==''){
 		echo "Champ invalide" ;
 	}
-    // else if($mdp!=$mdp_cf){
-    //     echo "Les mots de passe ne correspondent pas";
-    // }       
+    else if($password!=$con_pass){
+        echo "Les mots de passe ne correspondent pas";
+    }       
     else{
         require_once ('./modele/utilisateur_bd.php');
 		if(existe($name)){
 			echo 'Compte deja existe';
 		}
 		else{
-			if(inscrire_bd($name,$username,$password,$resultat)){
+			if(inscrire_bd($name,$username,$password,$latitude,$longitude,$resultat)){
 				setcookie('id',$resultat['id'],time()+3000); //creation de cookies
 				unset($_SESSION['profil']);
 				$_SESSION['profil']['name'] = $resultat['name'];
+				$_SESSION['profil']['latitude'] = $resultat['latitude'];
+				$_SESSION['profil']['longitude'] = $resultat['longitude'];
 				$_SESSION['profil']['id'] = $resultat['id'];
-				echo "Succes d'inscription"; 
+				$_SESSION['profil']['amis'] = getFriends($resultat['id']);
+				echo "Succes"; 
 				
 			}
 			else{
@@ -77,32 +86,15 @@ function inscrire(){ //fonction d'inscription
 
 function deconnecter(){ //fonction pour déconnecter
 	session_destroy();
-	ident();
-}
-
-function infos_et_confirmer(){
-	$id=isset($_GET['voiture'])?$_GET['voiture']:'';
-
-	$voiture=array();
-    require_once('./modele/voiture_bd.php');
-    if(!afficher_v($id,$voiture)){
-        require ("./vue/voiture/entreprise/infos_et_confirmer.tpl") ;
-    }
-
-    else{
-        require ("./vue/voiture/entreprise/infos_et_confirmer.tpl") ;
-    } 
-
-	
-}
-
-function if_non_ident(){
-	require("./vue/voiture/entreprise/if_non_ident.tpl");
+	$url = "index.php?controle=utilisateur&action=accueil";
+	header ("Location:" . $url) ;
 }
 
 
-function pas_droit(){
-	require("./vue/utilisateur/pas_droit.tpl");
+function getFriends($id){
+	require_once ("./controle/utilisateur.php");
+	getFriends_bd($id,$resultat);
+	return $resultat; 	
 }
 
 ?>

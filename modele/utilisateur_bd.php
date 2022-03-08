@@ -1,38 +1,15 @@
 <?php 
 
-function verif_ident_l_bd($pseudo, $mdp,&$resultat) { 
+function verif_ident_bd($username, $password,&$resultat) { 
 	require ("./modele/connect.php") ; //connexion à MYSQL et définition de $pdo
 	
-    $mdp_encode=sha1($mdp);
-	$sql="SELECT * FROM `client`  where pseudo=:pseudo and mdp=:mdp and id=1"; 
+    $pass_encode=sha1($password);
+	$sql="SELECT * FROM `utilisateur`  where username=:username and password=:password"; 
 	
 	try {
 		$commande = $pdo->prepare($sql);// *************
-		$commande->bindParam(':pseudo', $pseudo);
-		$commande->bindParam(':mdp',$mdp_encode );
-		$bool = $commande->execute();		
-		if ($bool) $resultat = $commande->fetch(PDO::FETCH_ASSOC); //tableau d'enregistrements
-		if ($resultat== null) return false; 
-		else return true;
-	}
-	
-	catch (PDOException $e) {
-		echo utf8_encode("Echec de select : " . $e->getMessage() . "\n");
-		die(); // On arrête tout.
-	}
-	 
-}
-
-function verif_ident_e_bd($pseudo, $mdp,&$resultat) { 
-	require ("./modele/connect.php") ; //connexion à MYSQL et définition de $pdo
-	
-    $mdp_encode=sha1($mdp);
-	$sql="SELECT * FROM `client`  where pseudo=:pseudo and mdp=:mdp and id<>1"; 
-	
-	try {
-		$commande = $pdo->prepare($sql);// *************
-		$commande->bindParam(':pseudo', $pseudo);
-		$commande->bindParam(':mdp',$mdp_encode );
+		$commande->bindParam(':username', $username);
+		$commande->bindParam(':password',$pass_encode );
 		$bool = $commande->execute();		
 		if ($bool) $resultat = $commande->fetch(PDO::FETCH_ASSOC); //tableau d'enregistrements
 		if ($resultat== null) return false; 
@@ -67,16 +44,19 @@ function existe($username){ //verifier si le compte on veut creer (inscrire) est
 
 }
 
-function inscrire_bd($name,$username,$password,&$resultat=array()) {
+function inscrire_bd($name,$username,$password,$latitude,$longitude,&$resultat=array()) {
 	require ("./modele/connect.php"); 
 	$mdp_encode=sha1($password);
 
-	$sql='INSERT INTO utilisateur(name, username, password) values (:name, :username, :password)';
+	$sql='INSERT INTO utilisateur(name, username, password,latitude,longitude) values (:name, :username, :password,:latitude,:longitude)';
 	try {
 		$commande = $pdo->prepare($sql);
 		$commande->bindParam(':name', $name);
 		$commande->bindParam(':username', $username);
 		$commande->bindParam(':password', $mdp_encode);
+		$commande->bindParam(':latitude', $latitude);
+		$commande->bindParam(':longitude', $longitude);
+
 		$commande->execute();
 		
 		$sql="SELECT * FROM `utilisateur`  where username=:username";
@@ -95,5 +75,28 @@ function inscrire_bd($name,$username,$password,&$resultat=array()) {
 	}
 	}
 
-
+function getFriends_bd($id,&$resultat=array()){
+	require ("./modele/connect.php");
+	$sql="select utilisateur.id,utilisateur.name,utilisateur.latitude,utilisateur.longitude 
+	from utilisateur inner join (SELECT r.id_ami 
+								 FROM utilisateur u 
+								 inner join relations r 
+								 on u.id=r.id 
+								 where u.id=:id) a 
+	on utilisateur.id=a.id_ami";
+	
+	try {
+		$commande = $pdo->prepare($sql);
+		$commande->bindParam(':id', $id);
+		$bool=$commande->execute();
+		if ($bool)$resultat=$commande->fetchAll(PDO::FETCH_ASSOC);
+		if ($resultat== null) return false; 
+		else return true;
+	}
+	
+	catch (PDOException $e) {
+		echo utf8_encode("Echec de select : " . $e->getMessage() . "\n");
+		die(); // On arrête tout.
+	}
+}
 ?>
