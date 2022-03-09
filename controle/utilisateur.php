@@ -16,8 +16,7 @@ function ident() {
 	    else { 
 			unset($_SESSION['profil']);
 			$_SESSION['profil']['name'] = $resultat['name'];
-			$_SESSION['profil']['latitude'] = $resultat['latitude'];
-			$_SESSION['profil']['longitude'] = $resultat['longitude'];
+			$_SESSION['profil']['location'] = $resultat['location'];
 			$_SESSION['profil']['id'] = $resultat['id'];
 			$_SESSION['profil']['amis'] = getFriends($resultat['id']);
 			echo "Succes"; 
@@ -25,6 +24,7 @@ function ident() {
 		}
     }	
 }
+
 
 function verif_ident($username,$password,&$resultat) { //fonction verifier l'identification pour le Loueur
 	
@@ -47,7 +47,6 @@ function inscrire(){ //fonction d'inscription
 	$con_pass=  isset($_POST['con_password'])?($_POST['con_password']):'';
 	$latitude=  isset($_POST['latitude'])?($_POST['latitude']):'';
 	$longitude=  isset($_POST['longitude'])?($_POST['longitude']):'';
-
 	$_SESSION['profil'] = array();
 
 

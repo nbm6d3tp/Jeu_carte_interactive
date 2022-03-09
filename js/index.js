@@ -1,4 +1,5 @@
 $( function() {
+
   var dialog, form,
     name = $( ".name" ),
     username=$( ".username" ),

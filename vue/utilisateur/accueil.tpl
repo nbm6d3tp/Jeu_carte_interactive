@@ -13,8 +13,7 @@
 
   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
   <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
-       
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>   
   <script src="js/index.js"></script>
 
 
@@ -61,25 +60,17 @@
     </fieldset>
   </form>
 </div>
-
 <?php
 if(isset($_SESSION['profil'])&&$_SESSION['profil']!=null){
     echo '<h3> 	Bienvenue M.'.$_SESSION['profil']['name'].'</h3>';
     echo "<button id='deconnecter'>Deconnection</button>";
     echo "<div class='liste_amis'>";
-
+    
     foreach($_SESSION['profil']['amis'] as $cle => $ami){
-      echo "<div></div>"
+      echo "<button class='ami' value='".$ami['location']."'>".$ami['name']."</button>";
       } 
+    echo"</div>";
 
-    echo "</div>";
-
-
-
-    
-    
-   
-      
 }
 else{
     echo "<button id='create-user'>Create new user</button>";
@@ -88,21 +79,8 @@ else{
 
 ?>
 
-  <div class="ami">
-    <p>name</p>
-    
-  </div>
 
-
-<div class='espace'></div>
-  <div class="formBlock">
-    <form id="formmap">
-        <input type="text" name="start" class="input" id="start" placeholder="Choose starting point" />
-        <input type="text" name="end" class="input" id="destination" placeholder="Choose starting point" />
-        <button style="display: none;" type="submit">Get Directions</button>
-    </form>
-  </div>
-  <div id='map'></div>
+<div id='map'></div> 
 
 <script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-map.js?key=S8d7L47mdyAG5nHG09dUnSPJjreUVPeC"></script>
 <script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-routing.js?key=S8d7L47mdyAG5nHG09dUnSPJjreUVPeC"></script>

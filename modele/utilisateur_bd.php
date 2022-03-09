@@ -46,16 +46,19 @@ function existe($username){ //verifier si le compte on veut creer (inscrire) est
 
 function inscrire_bd($name,$username,$password,$latitude,$longitude,&$resultat=array()) {
 	require ("./modele/connect.php"); 
+	$location=array();
+	$location[]=$latitude;
+	$location[]=$longitude;
+	$json_location=json_encode($location);
 	$mdp_encode=sha1($password);
 
-	$sql='INSERT INTO utilisateur(name, username, password,latitude,longitude) values (:name, :username, :password,:latitude,:longitude)';
+	$sql='INSERT INTO utilisateur(name, username, password,location) values (:name, :username, :password,:location)';
 	try {
 		$commande = $pdo->prepare($sql);
 		$commande->bindParam(':name', $name);
 		$commande->bindParam(':username', $username);
 		$commande->bindParam(':password', $mdp_encode);
-		$commande->bindParam(':latitude', $latitude);
-		$commande->bindParam(':longitude', $longitude);
+		$commande->bindParam(':location', $json_location);
 
 		$commande->execute();
 		
@@ -77,7 +80,7 @@ function inscrire_bd($name,$username,$password,$latitude,$longitude,&$resultat=a
 
 function getFriends_bd($id,&$resultat=array()){
 	require ("./modele/connect.php");
-	$sql="select utilisateur.id,utilisateur.name,utilisateur.latitude,utilisateur.longitude 
+	$sql="select utilisateur.id,utilisateur.name,utilisateur.location 
 	from utilisateur inner join (SELECT r.id_ami 
 								 FROM utilisateur u 
 								 inner join relations r 
