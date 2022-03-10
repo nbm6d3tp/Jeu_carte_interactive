@@ -3,17 +3,37 @@
     height: 50px;
     width: 100%;
 }
+.div_buttons{
+    position: absolute;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+}
+.div_services{
+    gap: 10px;
+    position: relative;
+    z-index: 999;
+
+}
 
 .liste_amis{
+    position: relative;
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+    z-index: 999;
 
 }
 
 .ami{
     flex-grow: 1;
     max-width: 130px;
+    max-height: 100px;
+    padding: 0.5em; float: left; margin: 10px 10px 10px 0; background-color: #ccffcc;
+}
+.efface_ami{
+    flex-grow: 1;
+    max-width: 50px;
     max-height: 100px;
     padding: 0.5em; float: left; margin: 10px 10px 10px 0; background-color: #ccffcc;
 }
@@ -35,7 +55,7 @@ div#users-contain table td, div#users-contain table th { border: 1px solid #eee;
 
 #map {
     height:100vh;
-    width: 90%;
+    width: 100%;
     position: relative;
 }
 

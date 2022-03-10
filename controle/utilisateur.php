@@ -97,8 +97,12 @@ function getFriends($id){
 	return $resultat; 	
 }
 
-function getSessionLoc(){
-	echo $_SESSION['profil']['latitude'].",".$_SESSION['profil']['longitude'];
+function getSessionLatitude(){
+	echo $_SESSION['profil']['latitude'];
+}
+
+function getSessionLongitude(){
+	echo $_SESSION['profil']['longitude'];
 }
 
 function getSessionId(){
@@ -126,4 +130,13 @@ function isSession(){
 		echo "false";
 	}
 }
+
+// function effaceAmi(){
+// 	$id=$_SESSION['profil']['id'];
+// 	$id_ami= isset($_GET['id_ami'])?$_GET['id_ami']:'';
+
+// 	require_once ('./modele/utilisateur_bd.php');
+// 	effaceAmi_bd($id,$id_ami);
+// 	$_SESSION['profil']['amis']=getFriends($id);
+// }
 ?>

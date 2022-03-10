@@ -128,4 +128,31 @@ function setLocation_bd($id,$latitude,$longitude){
 		die(); // On arrête tout.
 	}
 }
+
+// function effaceAmi_bd($id,$id_ami){
+// 	require ("./modele/connect.php"); 
+// 	$sql='DELETE FROM relations WHERE id=:id and id_ami=:id_ami;';
+// 	try {
+// 		$commande = $pdo->prepare($sql);
+// 		$commande->bindParam(':id', $id);
+// 		$commande->bindParam(':id_ami', $id_ami);
+
+// 		$bool=$commande->execute();
+		
+
+// 		if($bool){
+// 			return true;
+// 		}
+// 		else{
+// 			return false;
+// 		}
+// 		}
+	
+// 	catch (PDOException $e) {
+// 		echo utf8_encode("Echec d'efface : " . $e->getMessage() . "\n");
+// 		die(); // On arrête tout.
+// 	}
+
+// }
+
 ?>

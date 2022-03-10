@@ -1,15 +1,35 @@
 // default map layer
 var session;
-var loc;
-$.get('index.php?controle=utilisateur&action=getSessionLoc', function (data) {
-    session = data;
-});
+var locate;
+var locate_string;
+
+if(sessionStorage.getItem('latitude')!=null){
+    locate = [sessionStorage.getItem('latitude'), sessionStorage.getItem('longitude')];
+    locate_string=sessionStorage.getItem('latitude')+','+sessionStorage.getItem('longitude');
+}
+else{
+    locate=[48.84162270,2.26924009];
+    locate_string="48.84162270,2.26924009";
+}
+// $.get('index.php?controle=utilisateur&action=getSessionLoc', function (data) {
+//     session = data;
+// });
 
 let map = L.map('map', {
     layers: MQ.mapLayer(),
-    center: [48.761360, 2.396874],
+    center: locate,
     zoom: 12
 });
+
+var DepartIcon = L.icon({
+    iconUrl: 'vue/img/red.png',
+
+    iconSize: [20, 29],
+    iconAnchor: [10, 29],
+    popupAnchor: [0, -29]
+});
+
+L.marker(locate, {icon: DepartIcon}).addTo(map).bindPopup("C'est ma position");
 
 
 function runDirection(start, end) {
@@ -17,7 +37,7 @@ function runDirection(start, end) {
     // recreating new map layer after removal
     map = L.map('map', {
         layers: MQ.mapLayer(),
-        center: [48.761360, 2.396874],
+        center: locate,
         zoom: 12
     });
     
@@ -72,24 +92,20 @@ function runDirection(start, end) {
 }
 
 
-$("#getLocMap").click(function(){
-    $.get('index.php?controle=utilisateur&action=getSessionLoc', function (data) {
-        session = data;
-        var log=session.split(',');
-        map.remove();
-
-        map = L.map('map', {
-            layers: MQ.mapLayer(),
-            center: log,
-            zoom: 14
-        });
-    });
-})
-$(".ami").click(function(){
-
+$("#getLocMap").button().click(function(){
+    map.off();
     map.remove();
-
-    start = session;
+    map = L.map('map', {
+        layers: MQ.mapLayer(),
+        center: locate,
+        zoom: 12
+    });
+    L.marker(locate, {icon: DepartIcon}).addTo(map).bindPopup("C'est ma position");
+});
+$(".ami").button().click(function(){
+    map.off();
+    map.remove();
+    start = locate_string;
     end=this.value;
     runDirection(start, end);
 });

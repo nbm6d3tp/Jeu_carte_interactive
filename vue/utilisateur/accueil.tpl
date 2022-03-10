@@ -3,7 +3,15 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>jQuery UI Dialog - Modal form</title>
+  
+  <?php
+    if(isset($_SESSION['profil'])&&$_SESSION['profil']!=null){
+      echo '<title> Bienvenue M.'.$_SESSION['profil']['name'].'</title>';
+    }
+    else{
+      echo "<title>Réseaux sociaux de carte</title>";
+    }
+  ?>
 
 
   <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
@@ -62,20 +70,29 @@
 </div>
 <?php
 if(isset($_SESSION['profil'])&&$_SESSION['profil']!=null){
-    echo '<h3> 	Bienvenue M.'.$_SESSION['profil']['name'].'</h3>';
-    echo "<button id='deconnecter'>Deconnection</button>";
-    echo "<button id='getLocMap'>Positionner a votre position actuelle</button>";
-    echo "<div class='liste_amis'>";
+    echo "<div class='div_buttons'>";
+      echo "<div class='div_services'>";
+      echo "<button id='deconnecter'>Deconnection</button>";
+      echo "<button id='getLocMap'>Positionner a votre position actuelle</button>";
+      echo "</div>";
+      echo "<div class='liste_amis'>";
     
     foreach($_SESSION['profil']['amis'] as $cle => $ami){
+      echo "<div>";
       echo "<button class='ami' value='".$ami['latitude'].",".$ami['longitude']."'>".$ami['name']."</button>";
-      } 
-    echo"</div>";
+      echo "</div>";
+    } 
+      echo"</div>";
+    echo "</div>";
 
 }
 else{
+  echo "<div class='div_buttons'>";
+  echo "<div class='div_services'>";
     echo "<button id='create-user'>Create new user</button>";
     echo "<button id='connecter'>Connection</button>";
+  echo"</div>";
+  echo "</div>";
 }
 
 ?>

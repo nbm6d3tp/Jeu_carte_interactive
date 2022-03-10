@@ -1,7 +1,6 @@
-$( 
-  function() {
+$( function() {
 
-  var dialog,isSession, form,
+  var dialog, form,
     name = $( ".name" ),
     username=$( ".username" ),
     password = $( ".password" ),
@@ -10,19 +9,17 @@ $(
     longitude=$('.longitude'),
     allFields = $( [] ).add( name ).add( username ).add( password ).add(con_password).add(latitude).add(longitude),
     tips = $( ".validateTips" );
-    // getLocation();
-    function getLocation() {
-      $.get('index.php?controle=utilisateur&action=isSession', function (data) {
-        if(data=="true"){
-          navigator.geolocation.getCurrentPosition(showPosition);
-        }
-    }
-    );
-      }
+    getLocation();
 
+    function getLocation() {
+      if(typeof(Storage) !== 'undefined'&&sessionStorage.getItem('latitude')==null){
+        navigator.geolocation.getCurrentPosition(showPosition);
+      }
+    }
       function showPosition(position) { 
-        var url="index.php?controle=utilisateur&action=setLocation&latitude="+position.coords.latitude+"&longitude="+position.coords.longitude;
-        $.get(url);
+        sessionStorage.setItem('latitude', position.coords.latitude);
+        sessionStorage.setItem('longitude', position.coords.longitude);
+        location.reload(true);
       }
   function updateTips( t ) {
     tips
@@ -38,7 +35,18 @@ function connect(){
      $("#form_connecter :input").serializeArray(), 
      function(info){ 
        if(info=="Succes"){
-        getLocation();
+         if(sessionStorage.getItem('latitude')!=null){
+          var url="index.php?controle=utilisateur&action=setLocation&latitude="+sessionStorage.getItem('latitude')+"&longitude="+sessionStorage.getItem('longitude');
+          $.get(url);
+         }
+        else{
+          $.get('index.php?controle=utilisateur&action=getSessionLatitude', function (data) {
+            sessionStorage.setItem('latitude',data);
+          });
+          $.get('index.php?controle=utilisateur&action=getSessionLongitude', function (data) {
+            sessionStorage.setItem('longitude',data);
+          });
+        }
         location.reload(true);
        }
        updateTips(info);
@@ -54,7 +62,6 @@ function connect(){
        $("#form_inscrire :input").serializeArray(), 
        function(info){ 
         if(info=="Succes"){
-          getLocation();
           location.reload(true);
          } 
         updateTips(info); 
@@ -120,6 +127,7 @@ function connect(){
   });
 
   $( "#deconnecter" ).button().on( "click", function() {
+    sessionStorage.clear();  
     window.location.href = "index.php?controle=utilisateur&action=deconnecter";
   });
 
@@ -135,9 +143,6 @@ function connect(){
     latitude.val(position.coords.latitude);
     longitude.val(position.coords.longitude);
   }
-
-  getLocation();
-
 
 } 
 
