@@ -46,19 +46,17 @@ function existe($username){ //verifier si le compte on veut creer (inscrire) est
 
 function inscrire_bd($name,$username,$password,$latitude,$longitude,&$resultat=array()) {
 	require ("./modele/connect.php"); 
-	$location=array();
-	$location[]=$latitude;
-	$location[]=$longitude;
-	$json_location=json_encode($location);
 	$mdp_encode=sha1($password);
 
-	$sql='INSERT INTO utilisateur(name, username, password,location) values (:name, :username, :password,:location)';
+	$sql='INSERT INTO utilisateur(name, username, password,latitude,longitude) values (:name, :username, :password,:latitude,:longitude)';
 	try {
 		$commande = $pdo->prepare($sql);
 		$commande->bindParam(':name', $name);
 		$commande->bindParam(':username', $username);
 		$commande->bindParam(':password', $mdp_encode);
-		$commande->bindParam(':location', $json_location);
+		$commande->bindParam(':latitude', $latitude);
+		$commande->bindParam(':longitude', $longitude);
+
 
 		$commande->execute();
 		
@@ -80,7 +78,7 @@ function inscrire_bd($name,$username,$password,$latitude,$longitude,&$resultat=a
 
 function getFriends_bd($id,&$resultat=array()){
 	require ("./modele/connect.php");
-	$sql="select utilisateur.id,utilisateur.name,utilisateur.location 
+	$sql="select utilisateur.id,utilisateur.name,utilisateur.latitude, utilisateur.longitude
 	from utilisateur inner join (SELECT r.id_ami 
 								 FROM utilisateur u 
 								 inner join relations r 
@@ -99,6 +97,34 @@ function getFriends_bd($id,&$resultat=array()){
 	
 	catch (PDOException $e) {
 		echo utf8_encode("Echec de select : " . $e->getMessage() . "\n");
+		die(); // On arrête tout.
+	}
+}
+
+
+function setLocation_bd($id,$latitude,$longitude){
+	require ("./modele/connect.php"); 
+
+	$sql='UPDATE utilisateur SET latitude = :latitude, longitude = :longitude WHERE id=:id';
+	try {
+		$commande = $pdo->prepare($sql);
+		$commande->bindParam(':id', $id);
+ 		$commande->bindParam(':latitude', $latitude);
+		$commande->bindParam(':longitude', $longitude);
+
+		$bool=$commande->execute();
+		
+
+		if($bool){
+			return true;
+		}
+		else{
+			return false;
+		}
+		}
+	
+	catch (PDOException $e) {
+		echo utf8_encode("Echec d'inscription : " . $e->getMessage() . "\n");
 		die(); // On arrête tout.
 	}
 }

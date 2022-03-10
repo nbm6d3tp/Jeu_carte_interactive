@@ -1,6 +1,7 @@
-$( function() {
+$( 
+  function() {
 
-  var dialog, form,
+  var dialog,isSession, form,
     name = $( ".name" ),
     username=$( ".username" ),
     password = $( ".password" ),
@@ -9,7 +10,20 @@ $( function() {
     longitude=$('.longitude'),
     allFields = $( [] ).add( name ).add( username ).add( password ).add(con_password).add(latitude).add(longitude),
     tips = $( ".validateTips" );
+    // getLocation();
+    function getLocation() {
+      $.get('index.php?controle=utilisateur&action=isSession', function (data) {
+        if(data=="true"){
+          navigator.geolocation.getCurrentPosition(showPosition);
+        }
+    }
+    );
+      }
 
+      function showPosition(position) { 
+        var url="index.php?controle=utilisateur&action=setLocation&latitude="+position.coords.latitude+"&longitude="+position.coords.longitude;
+        $.get(url);
+      }
   function updateTips( t ) {
     tips
       .html(t)
@@ -20,12 +34,12 @@ $( function() {
   }
 
 function connect(){
-var msg;
     $.post( $("#form_connecter").attr("action"), 
      $("#form_connecter :input").serializeArray(), 
      function(info){ 
        if(info=="Succes"){
-        location.reload();
+        getLocation();
+        location.reload(true);
        }
        updateTips(info);
 
@@ -40,7 +54,8 @@ var msg;
        $("#form_inscrire :input").serializeArray(), 
        function(info){ 
         if(info=="Succes"){
-          location.reload();
+          getLocation();
+          location.reload(true);
          } 
         updateTips(info); 
     }
@@ -120,6 +135,9 @@ var msg;
     latitude.val(position.coords.latitude);
     longitude.val(position.coords.longitude);
   }
+
+  getLocation();
+
 
 } 
 

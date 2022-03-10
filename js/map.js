@@ -1,17 +1,23 @@
 // default map layer
+var session;
+var loc;
+$.get('index.php?controle=utilisateur&action=getSessionLoc', function (data) {
+    session = data;
+});
+
 let map = L.map('map', {
     layers: MQ.mapLayer(),
-    center: [35.791188, -78.636755],
+    center: [48.761360, 2.396874],
     zoom: 12
 });
-    
+
 
 function runDirection(start, end) {
     
     // recreating new map layer after removal
     map = L.map('map', {
         layers: MQ.mapLayer(),
-        center: [35.791188, -78.636755],
+        center: [48.761360, 2.396874],
         zoom: 12
     });
     
@@ -31,7 +37,7 @@ function runDirection(start, end) {
             var marker;
 
             custom_icon = L.icon({
-                iconUrl: 'img/red.png',
+                iconUrl: 'vue/img/red.png',
                 iconSize: [20, 29],
                 iconAnchor: [10, 29],
                 popupAnchor: [0, -29]
@@ -47,7 +53,7 @@ function runDirection(start, end) {
             var marker;
 
             custom_icon = L.icon({
-                iconUrl: 'img/blue.png',
+                iconUrl: 'vue/img/blue.png',
                 iconSize: [20, 29],
                 iconAnchor: [10, 29],
                 popupAnchor: [0, -29]
@@ -66,15 +72,23 @@ function runDirection(start, end) {
 }
 
 
+$("#getLocMap").click(function(){
+    $.get('index.php?controle=utilisateur&action=getSessionLoc', function (data) {
+        session = data;
+        var log=session.split(',');
+        map.remove();
 
+        map = L.map('map', {
+            layers: MQ.mapLayer(),
+            center: log,
+            zoom: 14
+        });
+    });
+})
 $(".ami").click(function(){
+
     map.remove();
 
-    var session;
-    $.ajaxSetup({cache: false})
-    $.get('controle/getsession.php', function (data) {
-        session = data;
-    });
     start = session;
     end=this.value;
     runDirection(start, end);

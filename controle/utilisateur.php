@@ -16,7 +16,8 @@ function ident() {
 	    else { 
 			unset($_SESSION['profil']);
 			$_SESSION['profil']['name'] = $resultat['name'];
-			$_SESSION['profil']['location'] = $resultat['location'];
+			$_SESSION['profil']['latitude'] = $resultat['latitude'];
+			$_SESSION['profil']['longitude'] = $resultat['longitude'];
 			$_SESSION['profil']['id'] = $resultat['id'];
 			$_SESSION['profil']['amis'] = getFriends($resultat['id']);
 			echo "Succes"; 
@@ -96,4 +97,33 @@ function getFriends($id){
 	return $resultat; 	
 }
 
+function getSessionLoc(){
+	echo $_SESSION['profil']['latitude'].",".$_SESSION['profil']['longitude'];
+}
+
+function getSessionId(){
+	echo $_SESSION['profil']['id'];
+}
+
+function setLocation(){
+	$id=$_SESSION['profil']['id'];
+	$latitude= isset($_GET['latitude'])?$_GET['latitude']:'';
+	$longitude= isset($_GET['longitude'])?$_GET['longitude']:'';
+
+	require_once ('./modele/utilisateur_bd.php');
+	if(setLocation_bd($id,$latitude,$longitude)){
+		$_SESSION['profil']['latitude'] = $latitude;
+		$_SESSION['profil']['longitude'] = $longitude;
+	}
+
+}
+
+function isSession(){
+	if(isset($_SESSION['profil'])&&$_SESSION['profil']!=null){
+		echo "true";
+	}
+	else{
+		echo "false";
+	}
+}
 ?>

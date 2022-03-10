@@ -32,12 +32,12 @@
       <label for="password">Password</label>
       <input type="password" name="password" class="text ui-widget-content ui-corner-all password">
       <label for="con_password">Confirmation of password</label>
-      <input type="password" name="con_password"class="text ui-widget-content ui-corner-all con_password">
+      <input type="password" name="con_password" class="text ui-widget-content ui-corner-all con_password">
      
       <label for="latitude">Latitude</label>
-      <input type="text" name="latitude"class="text ui-widget-content ui-corner-all latitude">
+      <input type="text" name="latitude" class="text ui-widget-content ui-corner-all latitude">
       <label for="longitude">Longitude</label>
-      <input type="text" name="longitude"class="text ui-widget-content ui-corner-all longitude">
+      <input type="text" name="longitude" class="text ui-widget-content ui-corner-all longitude">
       <!-- Allow form submission with keyboard without duplicating the dialog button -->
       <input type="submit" class="sub" tabindex="-1" style="position:absolute; top:-1000px">
     </fieldset>
@@ -64,10 +64,11 @@
 if(isset($_SESSION['profil'])&&$_SESSION['profil']!=null){
     echo '<h3> 	Bienvenue M.'.$_SESSION['profil']['name'].'</h3>';
     echo "<button id='deconnecter'>Deconnection</button>";
+    echo "<button id='getLocMap'>Positionner a votre position actuelle</button>";
     echo "<div class='liste_amis'>";
     
     foreach($_SESSION['profil']['amis'] as $cle => $ami){
-      echo "<button class='ami' value='".$ami['location']."'>".$ami['name']."</button>";
+      echo "<button class='ami' value='".$ami['latitude'].",".$ami['longitude']."'>".$ami['name']."</button>";
       } 
     echo"</div>";
 
