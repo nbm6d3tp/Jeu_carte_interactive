@@ -12,7 +12,7 @@
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script src="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.js"></script>
-    <script type="text/javascript" src="vue/mode_deviner/mode_deviner_page.js"></script>
+    <script type="text/javascript" src="js/mode_deviner_page.js"></script>
 
     <style>
         .ui-widget-content { width: 130px; height: 100px; padding: 0.5em; float: left; margin: 10px 10px 10px 0; background-color: #ccffcc;}
@@ -32,18 +32,16 @@
         </ul>
     </div>
 
+    <?php
+        if(isset($resultat)){
+            foreach($resultat as $cle => $objet){
+                echo "<div id='".$objet['origine']."' class='ui-widget-content drag'>";
+                echo "<p>".$objet['name']."</p>";
+                echo "</div>";
+          } 
+        }
+    ?>
     <!-- à générer avec une boucle while et la bd -->
-    <div id="obj1" class="ui-widget-content">
-		<p>Objet français</p>
-	</div>
-
-	<div id="obj2" class="ui-widget-content">
-		<p>Objet japonais</p>
-	</div>
-	
-    <div id="obj3" class="ui-widget-content">
-		<p>Objet mexicain</p>
-	</div>
 
     <div id="map"></div>
 

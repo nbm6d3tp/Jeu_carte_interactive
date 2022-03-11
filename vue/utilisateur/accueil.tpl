@@ -74,6 +74,7 @@ if(isset($_SESSION['profil'])&&$_SESSION['profil']!=null){
       echo "<div class='div_services'>";
       echo "<button id='deconnecter'>Deconnection</button>";
       echo "<button id='getLocMap'>Positionner a votre position actuelle</button>";
+      echo "<button id='jouer'>Jouer jeu</button>";
       echo "</div>";
       echo "<div class='liste_amis'>";
     

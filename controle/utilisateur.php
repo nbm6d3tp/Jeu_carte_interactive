@@ -92,7 +92,7 @@ function deconnecter(){ //fonction pour déconnecter
 
 
 function getFriends($id){
-	require_once ("./controle/utilisateur.php");
+	require_once ("./modele/utilisateur_bd.php");
 	getFriends_bd($id,$resultat);
 	return $resultat; 	
 }

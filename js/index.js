@@ -139,6 +139,11 @@ function connect(){
       }
   );
 
+  $('#jouer').button().on( "click", function() {
+    window.location = "index.php?controle=jeu&action=mode_deviner";
+    }
+    );
+
   function setPosition(position){
     latitude.val(position.coords.latitude);
     longitude.val(position.coords.longitude);
