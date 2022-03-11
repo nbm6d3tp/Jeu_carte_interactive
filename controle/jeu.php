@@ -16,7 +16,17 @@ function get_objs(){
 }
 
 function save_result(){
+	$id=$_SESSION['profil']['id'];
+	$res= isset($_GET['res'])?$_GET['res']:'';
 	require_once ("./modele/jeu_bd.php");
+	save_result_bd($id,$res);
+}
 
+function get_description(){
+	$id= isset($_GET['id'])?$_GET['id']:'';
+	$resultat=array();
+	require_once ("./modele/jeu_bd.php");
+	get_description_bd($id,$resultat);
+	echo $resultat["description"];
 }
 ?>

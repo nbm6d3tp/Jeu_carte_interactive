@@ -1,0 +1,21 @@
+/* Css Jeu */
+.ui-widget-content {    
+    width: 130px; height: 100px; padding: 0.5em; float: left; margin: 10px 10px 10px 0; background-color: #ccffcc;}
+#map { 
+    
+    height:50vh; 
+    width:100%;
+}
+
+#header{
+    display:flex;
+}
+#introduction{
+    width: 50%;
+}
+#descript{
+    width: 50%;
+    background-color: aliceblue;
+    display: flex;
+}
+
