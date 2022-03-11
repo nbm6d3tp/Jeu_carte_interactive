@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Mar 10, 2022 at 07:12 PM
+-- Generation Time: Mar 11, 2022 at 11:39 AM
 -- Server version: 5.7.31
 -- PHP Version: 7.3.21
 
@@ -20,6 +20,31 @@ SET time_zone = "+00:00";
 --
 -- Database: `projet_pwebc`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `objets`
+--
+
+DROP TABLE IF EXISTS `objets`;
+CREATE TABLE IF NOT EXISTS `objets` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  `origine` varchar(20) NOT NULL,
+  `description` text,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `objets`
+--
+
+INSERT INTO `objets` (`id`, `name`, `origine`, `description`) VALUES
+(1, 'Sushi', 'Japan', NULL),
+(2, 'Dior', 'France', NULL),
+(3, 'Taco', 'Mexico', NULL);
 
 -- --------------------------------------------------------
 
