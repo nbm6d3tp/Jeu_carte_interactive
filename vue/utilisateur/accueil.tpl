@@ -27,47 +27,17 @@
 
 </head>
 <body>
- 
+<div id="page" class="hiddenbody">
 <div id="dialog-form-inscrire" title="Create new user">
-  <p class="validateTips">All form fields are required.</p>
- 
-  <form id="form_inscrire" action="index.php?controle=utilisateur&action=inscrire" method="post">
-    <fieldset>
-      <label for="name">Name</label>
-      <input type="text" name="name" class="text ui-widget-content ui-corner-all name">
-      <label for="username">Username</label>
-      <input type="text" name="username"  class="text ui-widget-content ui-corner-all username">
-      <label for="password">Password</label>
-      <input type="password" name="password" class="text ui-widget-content ui-corner-all password">
-      <label for="con_password">Confirmation of password</label>
-      <input type="password" name="con_password" class="text ui-widget-content ui-corner-all con_password">
-     
-      <label for="latitude">Latitude</label>
-      <input type="text" name="latitude" class="text ui-widget-content ui-corner-all latitude">
-      <label for="longitude">Longitude</label>
-      <input type="text" name="longitude" class="text ui-widget-content ui-corner-all longitude">
-      <!-- Allow form submission with keyboard without duplicating the dialog button -->
-      <input type="submit" class="sub" tabindex="-1" style="position:absolute; top:-1000px">
-    </fieldset>
-  </form>
-  <button id='getLoc'>Get current location</button>
 </div>
  
 
 <div id="dialog-form-connecter" title="Connecter">
-  <p class="validateTips">All form fields are required.</p>
- 
-  <form id="form_connecter" action="index.php?controle=utilisateur&action=ident" method="post">
-    <fieldset>
-      <label for="username">Username</label>
-      <input type="text" name="username" class="text ui-widget-content ui-corner-all username">
-      <label for="password">Password</label>
-      <input type="password" name="password" class="text ui-widget-content ui-corner-all password">
-
-      <input type="submit" class="sub" tabindex="-1" style="position:absolute; top:-1000px">
-    </fieldset>
-  </form>
 </div>
+
+<div id="histoire" title="Histoire de jouer">
+</div>
+
 <?php
 if(isset($_SESSION['profil'])&&$_SESSION['profil']!=null){
     echo "<div class='div_buttons'>";
@@ -75,6 +45,7 @@ if(isset($_SESSION['profil'])&&$_SESSION['profil']!=null){
       echo "<button id='deconnecter'>Deconnection</button>";
       echo "<button id='getLocMap'>Positionner a votre position actuelle</button>";
       echo "<button id='jouer'>Jouer jeu</button>";
+      echo "<button id='affiche_histoire'>Histoire</button>";
       echo "</div>";
       echo "<div id='liste_amis'>";
     
@@ -106,7 +77,7 @@ else{
 
 ?>
 
-
+</div>
 <div id='map'></div> 
 
 <script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-map.js?key=S8d7L47mdyAG5nHG09dUnSPJjreUVPeC"></script>

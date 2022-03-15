@@ -1,0 +1,24 @@
+ <script src="js/index.js"></script>
+
+<p class="validateTips">All form fields are required.</p>
+ 
+  <form id="form_inscrire" action="index.php?controle=utilisateur&action=inscrire" method="post">
+    <fieldset>
+      <label for="name">Name</label>
+      <input type="text" name="name" class="text ui-widget-content ui-corner-all name">
+      <label for="username">Username</label>
+      <input type="text" name="username"  class="text ui-widget-content ui-corner-all username">
+      <label for="password">Password</label>
+      <input type="password" name="password" class="text ui-widget-content ui-corner-all password">
+      <label for="con_password">Confirmation of password</label>
+      <input type="password" name="con_password" class="text ui-widget-content ui-corner-all con_password">
+     
+      <label for="latitude">Latitude</label>
+      <input type="text" name="latitude" class="text ui-widget-content ui-corner-all latitude">
+      <label for="longitude">Longitude</label>
+      <input type="text" name="longitude" class="text ui-widget-content ui-corner-all longitude">
+      <!-- Allow form submission with keyboard without duplicating the dialog button -->
+      <input type="submit" class="sub" tabindex="-1" style="position:absolute; top:-1000px">
+    </fieldset>
+  </form>
+  <button id='getLoc'>Get current location</button>

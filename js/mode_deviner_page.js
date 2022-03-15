@@ -28,7 +28,6 @@ window.onload = function () {
         }
     });
 
-	console.log(tabObject);
 
 	var map = L.map('map', {
 		// maxBounds: bounds,   // Then add it here..
@@ -64,11 +63,10 @@ window.onload = function () {
 			rightCountry=rightCountry1.replace('-',' ');
 			idDiv=ui.draggable.attr("id");
 			idObj=idDiv.slice(2);
-			console.log(idObj);
             }
 			
 	});
-	
+
 	//Sur le click de la map, ajout d'un marqueur sur la carte avec le nom du pays
 	map.on('mouseup', onClick);
 	function onClick(e) {
@@ -97,7 +95,6 @@ window.onload = function () {
 						alert("Bravo ! Le pays est bien " + paysPropose + " !");
 						$("#"+idDiv).hide();
 						var img=getImg(idObj,tabObject);
-						console.log(img);
 						var obj=getName(idObj,tabObject);
 						var text=getDescript(idObj,tabObject);
 						update_descript(img,obj,text);
@@ -108,7 +105,7 @@ window.onload = function () {
 							alert("Felicitation! Vous avez terminé l'epreuve!");
 							clearInterval(chrono);
 							$('#rejouer').show();
-							$.get('index.php?controle=jeu&action=save_result&res='+tmp);
+							$.get('index.php?controle=jeu&action=save_result&res='+tmp+'&date='+moment().unix());
 						}
 					} else {
 						glisser=Boolean(0);

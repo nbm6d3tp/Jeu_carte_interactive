@@ -18,8 +18,10 @@ function get_objs(){
 function save_result(){
 	$id=$_SESSION['profil']['id'];
 	$res= isset($_GET['res'])?$_GET['res']:'';
+	$date= isset($_GET['date'])?$_GET['date']:'';
+
 	require_once ("./modele/jeu_bd.php");
-	save_result_bd($id,$res);
+	save_result_bd($id,$res,$date);
 }
 
 function get_description(){
@@ -29,4 +31,21 @@ function get_description(){
 	get_description_bd($id,$resultat);
 	echo $resultat["description"];
 }
+
+function get_histoire(){
+	$id=$_SESSION['profil']['id'];
+	$resultat=array();
+	require_once ("./modele/jeu_bd.php");
+	get_histoire_bd($id,$resultat);
+	$E = json_encode($resultat);
+	echo $E;
+}
+
+function get_bestscore(){
+	$id=$_SESSION['profil']['id'];
+	require_once ("./modele/jeu_bd.php");
+	get_bestscore_bd($id,$resultat);
+	echo $resultat['min(res)'];
+}
+
 ?>

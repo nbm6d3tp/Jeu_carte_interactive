@@ -1,5 +1,5 @@
 $( function() {
-
+  $("#page").removeClass("hiddenbody");
   var dialog, form,
     name = $( ".name" ),
     username=$( ".username" ),
@@ -93,6 +93,61 @@ function connect(){
   });
 
 
+ 
+    $( "#histoire" ).dialog({
+      autoOpen: false,
+      show: {
+        effect: "blind",
+        duration: 1000
+      },
+      hide: {
+        effect: "explode",
+        duration: 1000
+      }
+    });
+
+    $( "#affiche_histoire" ).button().on( "click", function() {
+      var histoire,bestscore;
+      $.ajax({
+        url: 'index.php?controle=jeu&action=get_histoire',
+        async: false,
+        dataType: 'json',
+        success: function(data) {
+          histoire = data;
+        }
+    });
+    $.ajax({
+      url: 'index.php?controle=jeu&action=get_bestscore',
+      async: false,
+      dataType: 'json',
+      success: function(data) {
+        bestscore = parseInt(data);
+      }
+  });
+      var min = Math.floor(bestscore/600);
+      var sec = Math.floor( (bestscore-min*600) / 10 );
+      var code="<h3>Votre meilleure resultat est "+min+":"+sec+"</h3>"
+      code+="<table>";
+      code+="<tr><th>Resultat</th><th>Date</th></tr>";
+      histoire.forEach(element => {
+        var tmp=element["res"];
+        min = Math.floor(tmp/600);
+        sec = Math.floor( (tmp-min*600) / 10 );
+        code+="<tr>";
+          code+="<td>";
+          code+=min+":"+sec;
+          code+="</td>";
+          code+="<td>";
+          code+=element["date"];
+          code+="</td>";
+        code+="</tr>";
+      });
+      code+="</table>";
+      $( "#histoire" ).html(code);
+      $( "#histoire" ).dialog( "open" );
+    });
+
+
   dialog_connect = $( "#dialog-form-connecter" ).dialog({
     autoOpen: false,
     height: 400,
@@ -114,15 +169,17 @@ function connect(){
       allFields.removeClass( "ui-state-error" );
     }
   });
- 
+
   form = dialog.find( "form" ).on( "submit", addUser);
   form_connect = dialog_connect.find( "form" ).on( "submit", connect);
 
   $( "#create-user" ).button().on( "click", function() {
+    $( "#dialog-form-inscrire" ).load("vue/utilisateur/inscrire.html");
     dialog.dialog( "open" );
   });
 
   $( "#connecter" ).button().on( "click", function() {
+    $( "#dialog-form-connecter" ).load("vue/utilisateur/connecter.html");
     dialog_connect.dialog( "open" );
   });
 
