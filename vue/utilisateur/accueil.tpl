@@ -38,6 +38,9 @@
 <div id="histoire" title="Histoire de jouer">
 </div>
 
+<div id="classement" title="Classement de liste d'amis">
+</div>
+
 <?php
 if(isset($_SESSION['profil'])&&$_SESSION['profil']!=null){
     echo "<div class='div_buttons'>";
@@ -46,13 +49,15 @@ if(isset($_SESSION['profil'])&&$_SESSION['profil']!=null){
       echo "<button id='getLocMap'>Positionner a votre position actuelle</button>";
       echo "<button id='jouer'>Jouer jeu</button>";
       echo "<button id='affiche_histoire'>Histoire</button>";
+      echo "<button id='affiche_classement'>Classement</button>";
+
       echo "</div>";
       echo "<div id='liste_amis'>";
     
     foreach($_SESSION['profil']['amis'] as $cle => $ami){
       echo "<div class='div_ami' data-value='".$ami['name']."' value=".$ami['id'].">";
       echo "<button class='ami ui-button ui-widget ui-corner-all' value='".$ami['latitude'].",".$ami['longitude']."'>".$ami['name']."</button>";
-      echo "<button class='efface_ami ui-button ui-widget ui-corner-all' value=".$ami['id']."> - </button>";
+      echo "<button class='efface_ami ui-button ui-widget ui-corner-all' data-value='".$ami['latitude'].",".$ami['longitude']."' value=".$ami['id']."> - </button>";
       echo "</div>";
     } 
       echo"</div>";

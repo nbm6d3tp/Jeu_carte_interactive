@@ -106,4 +106,31 @@ function get_bestscore_bd($id_user,&$resultat){
 	}
 }
 
+function get_classement_bd($id,&$resultat=array()){
+	require ("./modele/connect.php");
+	$sql="select DISTINCT utilisateur.id,utilisateur.name,(select min(res) from histoire where id_user=utilisateur.id)bestscore
+	from utilisateur inner join (SELECT r.id_ami 
+								 FROM utilisateur u 
+								 inner join relations r 
+								 on u.id=r.id 
+								 where u.id=:id) a 
+	on utilisateur.id=a.id_ami or utilisateur.id=:id 
+    where (select min(res) from histoire where id_user=utilisateur.id)is not null
+    ORDER BY bestscore ASC";
+
+	try {
+		$commande = $pdo->prepare($sql);
+		$commande->bindParam(':id', $id);
+		$bool=$commande->execute();
+		if ($bool)$resultat=$commande->fetchAll(PDO::FETCH_ASSOC);
+		if ($resultat== null) return false; 
+		else return true;
+	}
+	
+	catch (PDOException $e) {
+		echo utf8_encode("Echec de select : " . $e->getMessage() . "\n");
+		die(); // On arrête tout.
+	}
+}
+
 ?>

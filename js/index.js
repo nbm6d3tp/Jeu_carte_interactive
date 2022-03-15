@@ -93,7 +93,49 @@ function connect(){
   });
 
 
- 
+  $( "#classement" ).dialog({
+    autoOpen: false,
+    show: {
+      effect: "blind",
+      duration: 1000
+    },
+    hide: {
+      effect: "explode",
+      duration: 1000
+    }
+  });
+
+  $( "#affiche_classement" ).button().on( "click", function() {
+        var classement;
+      $.ajax({
+        url: 'index.php?controle=jeu&action=get_classement',
+        async: false,
+        dataType: 'json',
+        success: function(data) {
+          classement = data;
+        }  
+      });
+      var code="<table>";
+      code+="<tr><th>Prenom</th><th>Resultat</th></tr>";
+      classement.forEach(element => {
+        var tmp=element["bestscore"];
+        var min = Math.floor(tmp/600);
+        var sec = Math.floor( (tmp-min*600) / 10 );
+        code+="<tr>";
+          code+="<td>";
+          code+=element["name"];
+          code+="</td>";
+          code+="<td>";
+          code+=min+":"+sec;
+          code+="</td>";
+        code+="</tr>";
+      });
+      code+="</table>";
+      $( "#classement" ).html(code);
+        $( "#classement" ).dialog( "open" );
+  });
+
+
     $( "#histoire" ).dialog({
       autoOpen: false,
       show: {
@@ -214,7 +256,7 @@ function connect(){
     $(":button[value='"+this.value+"'][class='etranger ui-button ui-widget ui-corner-all']").hide();
     var $code= "<div class='div_ami' data-value='"+$(this).text()+"' value="+$(this).attr('data-value')+">";
     $code+= "<button class='ami ui-button ui-widget ui-corner-all' value='"+this.value+"'>"+$(this).text()+"</button>";
-    $code+= "<button class='efface_ami ui-button ui-widget ui-corner-all' value="+$(this).attr('data-value')+"> - </button>";
+    $code+= "<button class='efface_ami ui-button ui-widget ui-corner-all' data-value='"+this.value+"' value="+$(this).attr('data-value')+"> - </button>";
     $code+= "</div>";
     $('#liste_amis').append($code);
   }

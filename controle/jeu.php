@@ -48,4 +48,13 @@ function get_bestscore(){
 	echo $resultat['min(res)'];
 }
 
+
+function get_classement(){
+	$id=$_SESSION['profil']['id'];
+	$resultat=array();
+	require_once ("./modele/jeu_bd.php");
+	get_classement_bd($id,$resultat);
+	$E = json_encode($resultat);
+	echo $E;
+}
 ?>
