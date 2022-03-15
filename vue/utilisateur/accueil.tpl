@@ -79,7 +79,7 @@ if(isset($_SESSION['profil'])&&$_SESSION['profil']!=null){
       echo "<div id='liste_amis'>";
     
     foreach($_SESSION['profil']['amis'] as $cle => $ami){
-      echo "<div class='div_ami' value=".$ami['id'].">";
+      echo "<div class='div_ami' data-value='".$ami['name']."' value=".$ami['id'].">";
       echo "<button class='ami ui-button ui-widget ui-corner-all' value='".$ami['latitude'].",".$ami['longitude']."'>".$ami['name']."</button>";
       echo "<button class='efface_ami ui-button ui-widget ui-corner-all' value=".$ami['id']."> - </button>";
       echo "</div>";

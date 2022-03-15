@@ -159,4 +159,4 @@ function ajouterAmi(){
 	$_SESSION['profil']['amis']=getFriends($id);
 	$_SESSION['profil']['etrangers']=listeEtranger();
 }
-?>/
+?>

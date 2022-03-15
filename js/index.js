@@ -139,18 +139,23 @@ function connect(){
       }
   );
 
-  $('.efface_ami').on( "click", function() {
+
+  $(document).on( "click",".efface_ami", function() {
       $.get('index.php?controle=utilisateur&action=effaceAmi&id_ami='+this.value);
       console.log("hello");
       $(".div_ami[value="+this.value+"]").hide();
+
+      var $code= "<button class='etranger ui-button ui-widget ui-corner-all' data-value="+this.value+" value='"+$(this).attr('data-value')+"'>"+ $(this).parent().attr('data-value') +"</button>";
+      
+      $('#liste_etranger').append($code);
     }
     );
 
-  $('.etranger').on( "click", function() {
+  $(document).on( "click",'.etranger', function() {
     console.log("coucou");
     $.get('index.php?controle=utilisateur&action=ajouterAmi&id_ami='+$(this).attr('data-value'));
     $(":button[value='"+this.value+"'][class='etranger ui-button ui-widget ui-corner-all']").hide();
-    var $code= "<div class='div_ami' value="+$(this).attr('data-value')+">";
+    var $code= "<div class='div_ami' data-value='"+$(this).text()+"' value="+$(this).attr('data-value')+">";
     $code+= "<button class='ami ui-button ui-widget ui-corner-all' value='"+this.value+"'>"+$(this).text()+"</button>";
     $code+= "<button class='efface_ami ui-button ui-widget ui-corner-all' value="+$(this).attr('data-value')+"> - </button>";
     $code+= "</div>";
