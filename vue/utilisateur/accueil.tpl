@@ -64,6 +64,7 @@ if(isset($_SESSION['profil'])&&$_SESSION['profil']!=null){
     echo "</div>";
     
     echo "<div id='liste_etranger'>";
+    echo "<div id='connaisser'>Etranger</div>";
     foreach($_SESSION['profil']['etrangers'] as $cle => $etranger){
       echo "<button class='etranger ui-button ui-widget ui-corner-all' data-value=".$etranger['id']." value='".$etranger['latitude'].",".$etranger['longitude']."'>".$etranger['name']."</button>";
     } 
