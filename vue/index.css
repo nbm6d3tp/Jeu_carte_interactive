@@ -45,6 +45,10 @@ table {
 
 }
 
+.div_ami{
+    display: flex;
+    flex-direction: column;
+}
 .ami,.etranger{
     flex-grow: 1;
     max-width: 130px;
@@ -53,8 +57,8 @@ table {
 }
 .efface_ami{
     flex-grow: 1;
-    max-width: 50px;
-    max-height: 100px;
+    max-width: 130px;
+    max-height: 50px;
     padding: 0.5em; float: left; background-color: #ccffcc;
 }
 #liste_etranger{
