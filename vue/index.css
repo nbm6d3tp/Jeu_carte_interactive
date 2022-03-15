@@ -4,6 +4,7 @@
     width: 100%;
 }
 .div_buttons{
+    width: 50%;
     position: absolute;
     z-index: 999;
     display: flex;
@@ -16,26 +17,34 @@
 
 }
 
-.liste_amis{
+#liste_amis{
     position: relative;
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
     z-index: 999;
 
 }
 
-.ami{
+.ami,.etranger{
     flex-grow: 1;
     max-width: 130px;
     max-height: 100px;
-    padding: 0.5em; float: left; margin: 10px 10px 10px 0; background-color: #ccffcc;
+    padding: 0.5em; float: left; background-color: #ccffcc;
 }
 .efface_ami{
     flex-grow: 1;
     max-width: 50px;
     max-height: 100px;
-    padding: 0.5em; float: left; margin: 10px 10px 10px 0; background-color: #ccffcc;
+    padding: 0.5em; float: left; background-color: #ccffcc;
+}
+#liste_etranger{
+    top:0px;
+    right:0px;
+    position:absolute;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
 }
 /* Css Form */
 
@@ -56,7 +65,7 @@ div#users-contain table td, div#users-contain table th { border: 1px solid #eee;
 #map {
     height:100vh;
     width: 100%;
-    position: relative;
+    position: absolute;
 }
 
 .formBlock {

@@ -129,30 +129,84 @@ function setLocation_bd($id,$latitude,$longitude){
 	}
 }
 
-// function effaceAmi_bd($id,$id_ami){
-// 	require ("./modele/connect.php"); 
-// 	$sql='DELETE FROM relations WHERE id=:id and id_ami=:id_ami;';
-// 	try {
-// 		$commande = $pdo->prepare($sql);
-// 		$commande->bindParam(':id', $id);
-// 		$commande->bindParam(':id_ami', $id_ami);
+function effaceAmi_bd($id,$id_ami){
+	require ("./modele/connect.php"); 
+	$sql='DELETE FROM relations WHERE id=:id and id_ami=:id_ami;';
+	try {
+		$commande = $pdo->prepare($sql);
+		$commande->bindParam(':id', $id);
+		$commande->bindParam(':id_ami', $id_ami);
 
-// 		$bool=$commande->execute();
+		$bool=$commande->execute();
 		
 
-// 		if($bool){
-// 			return true;
-// 		}
-// 		else{
-// 			return false;
-// 		}
-// 		}
+		if($bool){
+			return true;
+		}
+		else{
+			return false;
+		}
+		}
 	
-// 	catch (PDOException $e) {
-// 		echo utf8_encode("Echec d'efface : " . $e->getMessage() . "\n");
-// 		die(); // On arrête tout.
-// 	}
+	catch (PDOException $e) {
+		echo utf8_encode("Echec d'efface : " . $e->getMessage() . "\n");
+		die(); // On arrête tout.
+	}
 
-// }
+}
+
+function listeEtranger_bd($id,&$resultat=array()){
+	require ("./modele/connect.php");
+
+	$sql="select utilisateur.id,utilisateur.name,utilisateur.latitude,utilisateur.longitude 
+	from utilisateur left join (select utilisateur.id,utilisateur.name,utilisateur.latitude, utilisateur.longitude
+		from utilisateur inner join (SELECT r.id_ami 
+									 FROM utilisateur u 
+									 inner join relations r 
+									 on u.id=r.id 
+									 where u.id=:id) a 
+		on utilisateur.id=a.id_ami)ami 
+		on utilisateur.id=ami.id 
+		WHERE ami.id IS NULL and utilisateur.id!=:id";
+
+		try {
+			$commande = $pdo->prepare($sql);
+			$commande->bindParam(':id', $id);
+			$bool=$commande->execute();
+			if ($bool)$resultat=$commande->fetchAll(PDO::FETCH_ASSOC);
+			if ($resultat== null) return false; 
+			else return true;
+		}
+		
+		catch (PDOException $e) {
+			echo utf8_encode("Echec de select : " . $e->getMessage() . "\n");
+			die(); // On arrête tout.
+		}
+}
+
+function ajouterAmi_bd($id,$id_ami){
+	require ("./modele/connect.php"); 
+	$sql='INSERT INTO relations(id,id_ami) VALUES(:id,:id_ami);';
+	try {
+		$commande = $pdo->prepare($sql);
+		$commande->bindParam(':id', $id);
+		$commande->bindParam(':id_ami', $id_ami);
+
+		$bool=$commande->execute();
+		
+
+		if($bool){
+			return true;
+		}
+		else{
+			return false;
+		}
+		}
+	
+	catch (PDOException $e) {
+		echo utf8_encode("Echec d'efface : " . $e->getMessage() . "\n");
+		die(); // On arrête tout.
+	}
+}
 
 ?>

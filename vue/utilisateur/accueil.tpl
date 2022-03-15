@@ -15,7 +15,7 @@
 
 
   <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css">
   <link rel="stylesheet" href="vue/index.css">
 
 
@@ -76,15 +76,23 @@ if(isset($_SESSION['profil'])&&$_SESSION['profil']!=null){
       echo "<button id='getLocMap'>Positionner a votre position actuelle</button>";
       echo "<button id='jouer'>Jouer jeu</button>";
       echo "</div>";
-      echo "<div class='liste_amis'>";
+      echo "<div id='liste_amis'>";
     
     foreach($_SESSION['profil']['amis'] as $cle => $ami){
-      echo "<div>";
-      echo "<button class='ami' value='".$ami['latitude'].",".$ami['longitude']."'>".$ami['name']."</button>";
+      echo "<div class='div_ami' value=".$ami['id'].">";
+      echo "<button class='ami ui-button ui-widget ui-corner-all' value='".$ami['latitude'].",".$ami['longitude']."'>".$ami['name']."</button>";
+      echo "<button class='efface_ami ui-button ui-widget ui-corner-all' value=".$ami['id']."> - </button>";
       echo "</div>";
     } 
       echo"</div>";
     echo "</div>";
+    
+    echo "<div id='liste_etranger'>";
+    foreach($_SESSION['profil']['etrangers'] as $cle => $etranger){
+      echo "<button class='etranger ui-button ui-widget ui-corner-all' data-value=".$etranger['id']." value='".$etranger['latitude'].",".$etranger['longitude']."'>".$etranger['name']."</button>";
+    } 
+    echo "</div>";
+
 
 }
 else{

@@ -20,6 +20,7 @@ function ident() {
 			$_SESSION['profil']['longitude'] = $resultat['longitude'];
 			$_SESSION['profil']['id'] = $resultat['id'];
 			$_SESSION['profil']['amis'] = getFriends($resultat['id']);
+			$_SESSION['profil']['etrangers'] = listeEtranger();
 			echo "Succes"; 
 
 		}
@@ -34,8 +35,7 @@ function verif_ident($username,$password,&$resultat) { //fonction verifier l'ide
 }
 
 
-function accueil() { //fonction affichier l'accueil pour le Loueur, à faire (Minh) *** 
-	// $nom = $_SESSION['profil']['nom'];
+function accueil() {
 	require ("./vue/utilisateur/accueil.tpl");
 }
 
@@ -71,6 +71,8 @@ function inscrire(){ //fonction d'inscription
 				$_SESSION['profil']['longitude'] = $resultat['longitude'];
 				$_SESSION['profil']['id'] = $resultat['id'];
 				$_SESSION['profil']['amis'] = getFriends($resultat['id']);
+				$_SESSION['profil']['etrangers'] = listeEtranger();
+
 				echo "Succes"; 
 				
 			}
@@ -131,12 +133,30 @@ function isSession(){
 	}
 }
 
-// function effaceAmi(){
-// 	$id=$_SESSION['profil']['id'];
-// 	$id_ami= isset($_GET['id_ami'])?$_GET['id_ami']:'';
+function effaceAmi(){
+	$id=$_SESSION['profil']['id'];
+	$id_ami= isset($_GET['id_ami'])?$_GET['id_ami']:'';
 
-// 	require_once ('./modele/utilisateur_bd.php');
-// 	effaceAmi_bd($id,$id_ami);
-// 	$_SESSION['profil']['amis']=getFriends($id);
-// }
-?>
+	require_once ('./modele/utilisateur_bd.php');
+	effaceAmi_bd($id,$id_ami);
+	$_SESSION['profil']['amis']=getFriends($id);
+	$_SESSION['profil']['etrangers']=listeEtranger();
+}
+
+function listeEtranger(){
+	$id=$_SESSION['profil']['id'];
+	require_once ('./modele/utilisateur_bd.php');
+	listeEtranger_bd($id,$resultat);
+	return $resultat; 	
+}
+
+function ajouterAmi(){
+	$id=$_SESSION['profil']['id'];
+	$id_ami= isset($_GET['id_ami'])?$_GET['id_ami']:'';
+
+	require_once ('./modele/utilisateur_bd.php');
+	ajouterAmi_bd($id,$id_ami);
+	$_SESSION['profil']['amis']=getFriends($id);
+	$_SESSION['profil']['etrangers']=listeEtranger();
+}
+?>/

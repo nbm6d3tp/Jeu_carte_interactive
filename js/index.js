@@ -139,10 +139,29 @@ function connect(){
       }
   );
 
+  $('.efface_ami').on( "click", function() {
+      $.get('index.php?controle=utilisateur&action=effaceAmi&id_ami='+this.value);
+      console.log("hello");
+      $(".div_ami[value="+this.value+"]").hide();
+    }
+    );
+
+  $('.etranger').on( "click", function() {
+    console.log("coucou");
+    $.get('index.php?controle=utilisateur&action=ajouterAmi&id_ami='+$(this).attr('data-value'));
+    $(":button[value='"+this.value+"'][class='etranger ui-button ui-widget ui-corner-all']").hide();
+    var $code= "<div class='div_ami' value="+$(this).attr('data-value')+">";
+    $code+= "<button class='ami ui-button ui-widget ui-corner-all' value='"+this.value+"'>"+$(this).text()+"</button>";
+    $code+= "<button class='efface_ami ui-button ui-widget ui-corner-all' value="+$(this).attr('data-value')+"> - </button>";
+    $code+= "</div>";
+    $('#liste_amis').append($code);
+  }
+  );
+
   $('#jouer').button().on( "click", function() {
     window.location = "index.php?controle=jeu&action=mode_deviner";
     }
-    );
+  );
 
   function setPosition(position){
     latitude.val(position.coords.latitude);
