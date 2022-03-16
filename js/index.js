@@ -76,13 +76,13 @@ function connect(){
     width: 350,
     modal: true,
     buttons: {
-      "Create an account": addUser,
+      "Créer un compte": addUser,
       Cancel: function() {
         tips.html("All form fields are required.");
         form[ 0 ].reset();
         allFields.removeClass( "ui-state-error" );
 
-        dialog.dialog( "close" );
+        dialog.dialog( "Fermer" );
       }
     },
     close: function() {
@@ -196,13 +196,13 @@ function connect(){
     width: 350,
     modal: true,
     buttons: {
-      "Connection": connect,
+      "Connexion": connect,
       Cancel: function() {
         tips.html("All form fields are required.");
         form_connect[ 0 ].reset();
         allFields.removeClass( "ui-state-error" );
 
-        dialog_connect.dialog( "close" );
+        dialog_connect.dialog( "Fermer" );
       }
     },
     close: function() {

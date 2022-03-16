@@ -9,7 +9,7 @@
       echo '<title> Bienvenue M.'.$_SESSION['profil']['name'].'</title>';
     }
     else{
-      echo "<title>Réseaux sociaux de carte</title>";
+      echo "<title>Réseaux social de carte</title>";
     }
   ?>
 
@@ -28,14 +28,14 @@
 </head>
 <body>
 <div id="page" class="hiddenbody">
-<div id="dialog-form-inscrire" title="Create new user">
+<div id="dialog-form-inscrire" title="Nouvel utilisateur">
 </div>
  
 
-<div id="dialog-form-connecter" title="Connecter">
+<div id="dialog-form-connecter" title="Connexion">
 </div>
 
-<div id="histoire" title="Histoire de jouer">
+<div id="histoire" title="Dernières parties jouées">
 </div>
 
 <div id="classement" title="Classement de liste d'amis">
@@ -45,10 +45,10 @@
 if(isset($_SESSION['profil'])&&$_SESSION['profil']!=null){
     echo "<div class='div_buttons'>";
       echo "<div class='div_services'>";
-      echo "<button id='deconnecter'>Deconnection</button>";
-      echo "<button id='getLocMap'>Positionner a votre position actuelle</button>";
-      echo "<button id='jouer'>Jouer jeu</button>";
-      echo "<button id='affiche_histoire'>Histoire</button>";
+      echo "<button id='deconnecter'>Déconnexion</button>";
+      echo "<button id='getLocMap'>Mettre à jour la position</button>";
+      echo "<button id='jouer'>Jouer</button>";
+      echo "<button id='affiche_histoire'>Historique de jeu</button>";
       echo "<button id='affiche_classement'>Classement</button>";
 
       echo "</div>";
@@ -64,7 +64,7 @@ if(isset($_SESSION['profil'])&&$_SESSION['profil']!=null){
     echo "</div>";
     
     echo "<div id='liste_etranger'>";
-    echo "<div id='connaisser'>Etranger</div>";
+    echo "<div id='connaisser'>Autres utilisateurs</div>";
     foreach($_SESSION['profil']['etrangers'] as $cle => $etranger){
       echo "<button class='etranger ui-button ui-widget ui-corner-all' data-value=".$etranger['id']." value='".$etranger['latitude'].",".$etranger['longitude']."'>".$etranger['name']."</button>";
     } 
@@ -75,8 +75,8 @@ if(isset($_SESSION['profil'])&&$_SESSION['profil']!=null){
 else{
   echo "<div class='div_buttons'>";
   echo "<div class='div_services'>";
-    echo "<button id='create-user'>Create new user</button>";
-    echo "<button id='connecter'>Connection</button>";
+    echo "<button id='create-user'>Nouvel utilisateur</button>";
+    echo "<button id='connecter'>Connexion</button>";
   echo"</div>";
   echo "</div>";
 }
