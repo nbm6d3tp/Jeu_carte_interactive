@@ -110,7 +110,7 @@ function onClick(e) {
 					}
 				} else {
 					glisser=Boolean(0);
-					alert("C'est faux!");
+					alert("C'est faux! C'est pas "+ paysPropose);
 				}
 
 			}
