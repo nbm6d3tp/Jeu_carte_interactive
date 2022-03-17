@@ -38,8 +38,7 @@ function existe($username){ //verifier si le compte on veut creer (inscrire) est
 	}
 	
 	catch (PDOException $e) {
-		echo utf8_encode("Echec de select : " . $e->getMessage() . "\n");
-		die(); // On arrête tout.
+		return true;	
 	}
 
 }

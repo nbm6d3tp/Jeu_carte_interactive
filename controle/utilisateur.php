@@ -59,7 +59,7 @@ function inscrire(){ //fonction d'inscription
     }       
     else{
         require_once ('./modele/utilisateur_bd.php');
-		if(existe($name)){
+		if(existe($username)){
 			echo 'Compte deja existe';
 		}
 		else{
